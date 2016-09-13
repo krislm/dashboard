@@ -1,0 +1,21 @@
+<ion-view view-title="Dashboard">
+    <ion-content class="padding has-header">
+        <div class="bar bar-header">
+        </div>
+        <div class="bar bar-subheader">
+            <div class="list card" ng-repeat="object in dashboard.data"
+                 ng-class="{'active':dashboard.isCurrent(object.id)}">
+                <div class="item item-icon-right item-icon-left">
+                    <i class="ion-compose icon" ng-click="dashboard.setEdited(object)"></i>
+
+                    <h2 class="text-center">{{object.name}}</h2>
+                    <i class="icon ion-close-round" ng-click="dashboard.delete(object.id)"></i>
+                </div>
+                <div class="item item-body">
+                    {{object.description}}
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+
