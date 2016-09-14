@@ -11,6 +11,32 @@ angular.module('SimpleRESTIonic.services', [])
         };
     })
 
+    .service('CommentsModel', function ($http, Backand) {
+        var service = this,
+            baseUrl = '/1/objects/',
+            objectName = 'comments/';
+
+        function getUrl() {
+            return Backand.getApiUrl() + baseUrl + objectName;
+        }
+
+        function getUrlForId(id) {
+          return getUrl() + id;
+        }
+
+        service.all = function () {
+          return $http.get(getUrl());
+        };
+
+        service.fetch = function (id) {
+          return $http.get(getUrlForId(id));
+        };
+
+        service.create = function (object) {
+          return $http.post(getUrl(), object);
+        };
+    })
+
     .service('ItemsModel', function ($http, Backand) {
         var service = this,
             baseUrl = '/1/objects/',
@@ -48,6 +74,8 @@ angular.module('SimpleRESTIonic.services', [])
     .service('LoginService', function (Backand) {
         var service = this;
 
+        service.user = null;
+
         service.signin = function (email, password, appName) {
             //call Backand for sign in
             return Backand.signin(email, password);
@@ -56,7 +84,7 @@ angular.module('SimpleRESTIonic.services', [])
         service.anonymousLogin= function(){
             // don't have to do anything here,
             // because we set app token att app.js
-        }
+        };
 
         service.signout = function () {
             return Backand.signout();

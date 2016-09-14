@@ -3,16 +3,36 @@
         <div class="bar bar-header">
         </div>
         <div class="bar bar-subheader">
-            <div class="list card" ng-repeat="object in dashboard.data"
+            <div class="list card" ng-repeat="object in dashboard.items"
                  ng-class="{'active':dashboard.isCurrent(object.id)}">
                 <div class="item item-icon-right item-icon-left">
-                    <i class="ion-compose icon" ng-click="dashboard.setEdited(object)"></i>
+                    <i class="ion-chatbubble icon" ng-click="object.isCommenting = true"></i>
 
                     <h2 class="text-center">{{object.name}}</h2>
-                    <i class="icon ion-close-round" ng-click="dashboard.delete(object.id)"></i>
+                    <!--<i class="icon ion-close-round" ng-click="dashboard.delete(object.id)"></i>-->
                 </div>
                 <div class="item item-body">
                     {{object.description}}
+                </div>
+                <ul class="list">
+                    <li class="item comment" ng-repeat="comment in object.comments track by $index">
+                        <p class="comment__content">{{comment.content}}</p>
+                        <p class="comment__author"> -{{comment.author}}</p>
+                    </li>
+                </ul>
+                <div class="new-comment" ng-if="object.isCommenting">
+                    <form class="create-form" role="form" ng-submit="dashboard.createComment(object)" novalidate>
+                        <div class="list">
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Your comment</span>
+                                <input type="text" class="form-control"
+                                       ng-model="dashboard.newComment"
+                                       placeholder="Type comment here...">
+                            </label>
+                        </div>
+                        <button style="margin-left:10px;" class="button button-block button-positive" type="submit">Post</button>
+                        <button style="margin-left:10px;" class="button button-block button-assertive" ng-click="object.isCommenting = false">Cancel</button>
+                    </form>
                 </div>
             </div>
         </div>

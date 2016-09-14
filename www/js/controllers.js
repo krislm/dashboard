@@ -5,7 +5,9 @@ angular.module('SimpleRESTIonic.controllers', [])
 
         function signin() {
             LoginService.signin(login.email, login.password)
-                .then(function () {
+                .then(function (result) {
+                    console.warn(result);
+                    LoginService.user = result;
                     onLogin();
                 }, function (error) {
                     console.log(error)
@@ -20,7 +22,7 @@ angular.module('SimpleRESTIonic.controllers', [])
         function onLogin(){
             $rootScope.$broadcast('authorized');
             login.email = '';
-            login.password = '';            
+            login.password = '';
             $state.go('tab.dashboard');
         }
 
@@ -41,10 +43,14 @@ angular.module('SimpleRESTIonic.controllers', [])
         login.anonymousLogin = anonymousLogin;
     })
 
-    .controller('DashboardCtrl', function (ItemsModel, $rootScope) {
+    .controller('DashboardCtrl', function (ItemsModel, CommentsModel, LoginService, $rootScope) {
         var vm = this;
 
         vm.objects = [];
+        vm.newComment = '';
+
+        vm.getItemComments = getItemComments;
+        vm.createComment = createComment;
         vm.delete = deleteObject;
         vm.getAll = getAll;
 
@@ -54,10 +60,50 @@ angular.module('SimpleRESTIonic.controllers', [])
             getAll();
         }
 
+        function _appendCommentToItem(comment) {
+            for(var i = 0, item = vm.items[i]; i < vm.items.length; i++) {
+                item = vm.items[i];
+                console.log(comment.item, item);
+                if(comment.item == item.id) {
+                    if(item.comments != null) {
+                        item.comments.push(comment);
+                    } else {
+                        item.comments = [comment];
+                    }
+                }
+            }
+        }
+
+        function getItemComments() {
+            for(var i = 0, comment = vm.comments[i]; i < vm.comments.length; i++) {
+                comment = vm.comments[i];
+                _appendCommentToItem(comment);
+            }
+        }
+
+        function createComment(item) {
+            var comment = {
+                author: LoginService.user.firstName,
+                content: vm.newComment,
+                item: item.id
+            };
+            CommentsModel.create(comment)
+                .then(function (result) {
+                    console.warn(result);
+                    item.isCommenting = false;
+                    item.comments.push(comment);
+                });
+        }
+
         function getAll() {
             ItemsModel.all()
                 .then(function (result) {
-                    vm.data = result.data.data;
+                    vm.items = result.data.data;
+                    CommentsModel.all()
+                        .then(function (result) {
+                            vm.comments = result.data.data;
+                            getItemComments();
+                        });
                 });
         }
 
