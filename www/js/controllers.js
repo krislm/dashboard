@@ -80,7 +80,7 @@ angular.module('SimpleRESTIonic.controllers', [])
                 .then(function (result) {
                     console.warn(result);
                     item.isCommenting = false;
-                    item.comments.push(comment);
+                    vm.comments.push(comment);
                 });
         }
 

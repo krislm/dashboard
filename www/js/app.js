@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('SimpleRESTIonic', ['ionic', 'backand', 'SimpleRESTIonic.controllers', 'SimpleRESTIonic.services'])
 
-    .run(function ($ionicPlatform) {
+    .run(function ($ionicPlatform, LoginService) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -18,6 +18,10 @@ angular.module('SimpleRESTIonic', ['ionic', 'backand', 'SimpleRESTIonic.controll
                 // org.apache.cordova.statusbar required
                 StatusBar.styleLightContent();
             }
+            if(localStorage.getItem('BACKANDuser')) {
+                LoginService.user = angular.fromJson(localStorage.getItem('BACKANDuser'));
+            }
+            
         });
     })
     .config(function (BackandProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
