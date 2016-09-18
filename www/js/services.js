@@ -47,7 +47,7 @@ angular.module('SimpleRESTIonic.services', [])
         }
 
         function getUrlForId(id) {
-            return getUrl() + id;
+            return getUrl() + id + '?deep=true';
         }
 
         service.all = function () {
@@ -56,6 +56,11 @@ angular.module('SimpleRESTIonic.services', [])
 
         service.fetch = function (id) {
             return $http.get(getUrlForId(id));
+        };
+        
+        service.comments = function (id) {
+            var param = encodeURIComponent('{"item_id":'+id+'}');
+            return $http.get(Backand.getApiUrl()  + '/1/query/data/item_comments?parameters=' + param);
         };
 
         service.create = function (object) {

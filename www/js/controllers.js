@@ -48,6 +48,7 @@ angular.module('SimpleRESTIonic.controllers', [])
 
         vm.objects = [];
         vm.newComment = '';
+        vm.activeItemIndex = -1;
 
         vm.getItemComments = getItemComments;
         vm.createComment = createComment;
@@ -60,25 +61,13 @@ angular.module('SimpleRESTIonic.controllers', [])
             getAll();
         }
 
-        function _appendCommentToItem(comment) {
-            for(var i = 0, item = vm.items[i]; i < vm.items.length; i++) {
-                item = vm.items[i];
-                console.log(comment.item, item);
-                if(comment.item == item.id) {
-                    if(item.comments != null) {
-                        item.comments.push(comment);
-                    } else {
-                        item.comments = [comment];
-                    }
-                }
-            }
-        }
 
-        function getItemComments() {
-            for(var i = 0, comment = vm.comments[i]; i < vm.comments.length; i++) {
-                comment = vm.comments[i];
-                _appendCommentToItem(comment);
-            }
+        function getItemComments(itemIndex, itemId) {
+            ItemsModel.comments(itemId)
+                .then(function(result) {
+                    vm.comments = result.data;
+                    vm.activeItemIndex = itemIndex;
+                });
         }
 
         function createComment(item) {
@@ -99,11 +88,6 @@ angular.module('SimpleRESTIonic.controllers', [])
             ItemsModel.all()
                 .then(function (result) {
                     vm.items = result.data.data;
-                    CommentsModel.all()
-                        .then(function (result) {
-                            vm.comments = result.data.data;
-                            getItemComments();
-                        });
                 });
         }
 

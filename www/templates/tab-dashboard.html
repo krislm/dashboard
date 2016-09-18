@@ -3,19 +3,19 @@
         <div class="bar bar-header">
         </div>
         <div class="bar bar-subheader">
-            <div class="list card" ng-repeat="object in dashboard.items"
+            <div class="list card" ng-repeat="object in dashboard.items track by $index"
                  ng-class="{'active':dashboard.isCurrent(object.id)}">
                 <div class="item item-icon-right item-icon-left">
                     <i class="ion-chatbubble icon" ng-click="object.isCommenting = true"></i>
 
-                    <h2 class="text-center">{{object.name}}</h2>
-                    <!--<i class="icon ion-close-round" ng-click="dashboard.delete(object.id)"></i>-->
+                    <h2 class="text-center dashboard-item" ng-click="dashboard.getItemComments($index, object.id)">{{object.name}}</h2>
+                    <i class="icon ion-close-round" ng-show="dashboard.activeItemIndex === $index" ng-click="dashboard.activeItemIndex = -1"></i>
                 </div>
-                <div class="item item-body">
+                <div class="item item-body" ng-show="dashboard.activeItemIndex === $index">
                     {{object.description}}
                 </div>
-                <ul class="list">
-                    <li class="item comment" ng-repeat="comment in object.comments track by $index">
+                <ul class="list" ng-if="dashboard.activeItemIndex === $index">
+                    <li class="item comment" ng-repeat="comment in dashboard.comments track by $index" >
                         <p class="comment__content">{{comment.content}}</p>
                         <p class="comment__author"> -{{comment.author}}</p>
                     </li>
