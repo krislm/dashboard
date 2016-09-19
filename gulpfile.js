@@ -6,10 +6,27 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+/*var backandSync = require('sync-module');
+
+gulp.task('sts', function(){
+  var masterToken = "f8e6d6e9-55de-4a3e-ba75-ef89327e8518";
+  var userToken = "d1ad9cae-7432-11e6-a5c8-0ed7053426cb";
+  return backandSync.sts(masterToken, userToken);
+});
+
+gulp.task('dist',['sts'], function() {
+  var folder = "./www";
+  return backandSync.dist(folder);
+});
+
+gulp.task('clean', function() {
+  return backandSync.clean();
+});*/
 
 var paths = {
   sass: ['./scss/**/*.scss']
 };
+
 
 gulp.task('default', ['sass']);
 

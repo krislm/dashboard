@@ -8,3 +8,5 @@ plugins/
 .editorconfig
 .idea/
 bower_components/
+.awspublish-hosting.backand.io
+.backand-credentials.json

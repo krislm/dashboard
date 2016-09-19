@@ -1,6 +1,7 @@
 <ion-view view-title="Dashboard">
     <ion-content class="padding has-header">
         <div class="bar bar-header">
+            <button ng-click="dashboard.getAll()" class="button button-block button-positive">Refresh</button>
         </div>
         <div class="bar bar-subheader">
             <div class="list card" ng-repeat="object in dashboard.items track by $index"
@@ -30,8 +31,8 @@
                                        placeholder="Type comment here...">
                             </label>
                         </div>
-                        <button style="margin-left:10px;" class="button button-block button-positive" type="submit">Post</button>
-                        <button style="margin-left:10px;" class="button button-block button-assertive" ng-click="object.isCommenting = false">Cancel</button>
+                        <button class="button button-block button-positive" type="submit">Post</button>
+                        <button class="button button-block button-assertive" ng-click="object.isCommenting = false">Cancel</button>
                     </form>
                 </div>
             </div>

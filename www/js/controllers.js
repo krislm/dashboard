@@ -43,7 +43,7 @@ angular.module('SimpleRESTIonic.controllers', [])
         login.anonymousLogin = anonymousLogin;
     })
 
-    .controller('DashboardCtrl', function (ItemsModel, CommentsModel, LoginService, $rootScope) {
+    .controller('DashboardCtrl', function (ItemsModel, CommentsModel, LoginService) {
         var vm = this;
 
         vm.objects = [];
